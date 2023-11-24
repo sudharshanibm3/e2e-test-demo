@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: env-variable-in-config
+spec:
+    runtimeClassName: kata-remote
+    containers:
+      - name: env-variable-in-config
+        image: nginx:latest
+        env:
+          - name: "ISPRODUCTION"
+            value: "false"
+        command: ["/bin/sh","-c","env"]
+    restartPolicy: OnFailure

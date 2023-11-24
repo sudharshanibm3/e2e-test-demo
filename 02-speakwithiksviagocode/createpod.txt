@@ -1,0 +1,51 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"path/filepath"
+
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	_ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
+)
+
+func main() {
+	//Load the kube config file
+	fmt.Println("Getting Kube config file...")
+	kubeconfig, err := clientcmd.BuildConfigFromFlags("", filepath.Join(homedir.HomeDir(), ".kube", "config"))
+	if err != nil {
+		panic(err)
+	}
+	//Connect to Kubernetes
+	fmt.Println("Connecting to Kubernetes...")
+	clientset, err := kubernetes.NewForConfig(kubeconfig)
+	if err != nil {
+		panic(err)
+	}
+	//CreatePods
+	pod := &v1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "nginx-pod",
+			Namespace: "default",
+		},
+		Spec: v1.PodSpec{
+			Containers: []v1.Container{
+				{
+					Name:  "nginx-contianer",
+					Image: "nginx",
+				},
+			},
+			RestartPolicy: v1.RestartPolicyNever,
+		},
+	}
+	createdpod, err := clientset.CoreV1().Pods("default").Create(context.Background(), pod, metav1.CreateOptions{})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Created Pod:\n", createdpod.ObjectMeta.Name)
+
+}

@@ -1,0 +1,40 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: no-annotations
+# spec:
+#   runtimeClassName: kata-remote
+#   containers:
+#   - name: nginx
+#     image: nginx:1.14.2
+#     ports:
+#     - containerPort: 80
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: annotations-instance-type
+#   annotations:
+#    io.katacontainers.config.hypervisor.machine_type: "cz2-2x4"
+# spec:
+#   runtimeClassName: kata-remote
+#   containers:
+#   - name: nginx
+#     image: nginx:1.14.2
+#     ports:
+#     - containerPort: 80
+# ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations-cpu-mem
+  annotations:
+   io.katacontainers.config.hypervisor.default_vcpus: "2"
+   io.katacontainers.config.hypervisor.default_memory: "12288"
+spec:
+  runtimeClassName: kata-remote
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80

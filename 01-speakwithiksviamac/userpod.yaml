@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: user-pod
+spec:
+    runtimeClassName: kata-remote
+    containers:
+      - name: user-pod
+        image: quay.io/confidential-containers/test-images:testuser
+    restartPolicy: Never

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: user-pod-ubuntu
+spec:
+    runtimeClassName: kata-remote
+    containers:
+      - name: user-container-ubuntu
+        image: quay.io/sudharshanibm3/test-images:testuserubuntu
+    restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: user-pod-alpine
+spec:
+    runtimeClassName: kata-remote
+    containers:
+      - name: user-container-alpine
+        image: quay.io/sudharshanibm3/test-images:testuser
+    restartPolicy: OnFailure

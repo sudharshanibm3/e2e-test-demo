@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sudharshan-peer-pod
+spec:
+    runtimeClassName: kata-remote
+    containers:
+      - name: nginx-container
+        image: nginx
+    restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sudharshan-normal-pod
+spec:
+    containers:
+      - name: nginx-container
+        image: nginx
+    restartPolicy: Never
